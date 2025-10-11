@@ -18,8 +18,10 @@ public class CreateProjectHandler
     {
         var project = new Project(cmd.Title, cmd.Brief);
 
-        // Dia 1: stub; no Dia 2 chamaremos a IA de verdade
-        project.AttachOpenApi("openapi: 3.0.3\ninfo:\n  title: stub\n  version: 0.1.0\n");
+        // 🔁 antes (stub): project.AttachOpenApi("openapi: 3.0.3\ninfo:\n  title: stub\n  version: 0.1.0\n");
+        // ✅ agora (IA real):
+        var yaml = await _ai.GenerateOpenApiYamlAsync(cmd.Brief, ct);
+        project.AttachOpenApi(yaml);
 
         await _repo.AddAsync(project, ct);
         await _repo.SaveChangesAsync(ct);
